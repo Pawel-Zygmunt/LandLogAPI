@@ -21,7 +21,7 @@ builder.Services.AddControllers().AddFluentValidation(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default"), o=>o.UseNetTopologySuite()));
-builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(c =>
+builder.Services.AddIdentity<AppUser, AppRole>(c =>
 {
     c.Password.RequireDigit = false;
     c.Password.RequireUppercase = false;
