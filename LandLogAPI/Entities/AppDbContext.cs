@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LandLogAPI.Entities
 {
-    public class AppDbContext: IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+    public class AppDbContext: IdentityDbContext<AppUser, AppRole, UserId>
     {
         public DbSet<ProjectNote> ProjectNotes { get; set; }
         public DbSet<ParcelNote> ParcelNotes { get; set; }
@@ -24,6 +24,7 @@ namespace LandLogAPI.Entities
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasPostgresExtension("postgis");
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+            modelBuilder.HasDefaultSchema("xzy"); //TODO: change for something meaningful 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

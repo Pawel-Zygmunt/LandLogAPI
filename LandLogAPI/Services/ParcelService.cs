@@ -41,9 +41,7 @@
 
         private double CalculateParcelArea()
         {
-
+            throw new NotImplementedException();
         }
-
-
     }
 }

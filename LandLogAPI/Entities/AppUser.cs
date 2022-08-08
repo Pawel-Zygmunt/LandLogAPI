@@ -10,7 +10,7 @@ namespace LandLogAPI.Entities
         public static implicit operator UserId(Guid id) => new(id);
     }
 
-    public class AppUser : IdentityUser<Guid>, IEntityTypeConfiguration<AppUser>
+    public class AppUser : IdentityUser<UserId>, IEntityTypeConfiguration<AppUser>
     {
         public List<Project> Projects { get; set; } = new List<Project>();
 
@@ -22,8 +22,18 @@ namespace LandLogAPI.Entities
                 .HasForeignKey(p => p.OwnerId)
                 .IsRequired();
 
-           //builder.Property(x=>x.Id)
-           //     .HasConversion(x=>x.)
+           builder.Property(x=>x.Id)
+                .HasConversion(x=>x.Id, x => new UserId(x));
+        }
+    }
+    
+    public class AppRole : IdentityRole<UserId>, IEntityTypeConfiguration<AppRole>
+    {
+        public void Configure(EntityTypeBuilder<AppRole> builder)
+        {
+            builder.Property(x=>x.Id)
+                .HasConversion(x=>x.Id, x=> new UserId(x));
         }
     }
 }
+
