@@ -20,7 +20,7 @@ builder.Services.AddControllers().AddFluentValidation(opt =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default"), o=>o.UseNetTopologySuite()));
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(c =>
 {
     c.Password.RequireDigit = false;
@@ -75,6 +75,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserContextService, UserContextService>();
+
 
 var app = builder.Build();
 

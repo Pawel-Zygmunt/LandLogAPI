@@ -22,6 +22,7 @@ namespace LandLogAPI.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasPostgresExtension("postgis");
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

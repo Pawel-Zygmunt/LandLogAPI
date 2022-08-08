@@ -4,9 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LandLogAPI.Entities
 {
+    public record ProjectId(Guid Id)
+    {
+        public static implicit operator Guid(ProjectId id) => id.Id;
+        public static implicit operator ProjectId(Guid id) => new(id);
+    }
+
     public class Project : IEntityTypeConfiguration<Project>
     {
-        public Guid Id { get; set; }
+        public ProjectId Id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -21,6 +27,9 @@ namespace LandLogAPI.Entities
 
         public void Configure(EntityTypeBuilder<Project> builder)
         {
+            
+            builder.Property(x => x.Id)
+                .HasConversion(x => x.Id, x => new ProjectId(x));
             builder.Property(x => x.CreatedAt).ValueGeneratedOnAdd();
             builder.Property(x => x.Color).HasMaxLength(10);
 

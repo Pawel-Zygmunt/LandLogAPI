@@ -3,8 +3,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LandLogAPI.Entities
 {
+    public record ParcelId(string Id)
+    {
+        public static implicit operator string(ParcelId id) => id.Id;
+        public static implicit operator ParcelId(string id) => new(id);
+    }
+
     public class Parcel : IEntityTypeConfiguration<Parcel>
     {
+        public ParcelId Id { get; set; }
         public string Identifier { get; set; }
         public string Voivodeship { get; set; }
         public string County { get; set; }
@@ -20,7 +27,9 @@ namespace LandLogAPI.Entities
 
         public void Configure(EntityTypeBuilder<Parcel> builder)
         {
-            builder.HasKey(x => x.Identifier);
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasConversion(x => x.Id, x => new ParcelId(x));
 
             builder.Property(x => x.Voivodeship).HasMaxLength(255);
             builder.Property(x => x.County).HasMaxLength(255);
@@ -31,7 +40,7 @@ namespace LandLogAPI.Entities
 
             builder.HasMany(p => p.Notes)
                 .WithOne(n => n.Parcel)
-                .HasForeignKey(n => n.ParcelIdentifier)
+                .HasForeignKey(n => n.ParcelId)
                 .IsRequired();
         }
     }
